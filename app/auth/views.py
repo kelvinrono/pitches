@@ -6,10 +6,6 @@ from .. import db
 from flask_login import login_user 
 
 
-@auth.route('/login')
-def login():
-    return render_template('auth/login.html')
-
 @auth.route('/register',methods = ["GET","POST"])
 def register():
     form = RegistrationForm()
@@ -32,5 +28,5 @@ def login():
 
         flash('Invalid username or Password')
 
-    title = "watchlist login"
+    title = "Pitching website"
     return render_template('auth/login.html',login_form = login_form,title=title)
