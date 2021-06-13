@@ -1,9 +1,9 @@
 from flask import render_template,request, redirect, url_for,abort
 from . import main
-from ..models import User
+from ..models import Pitch, User
 from .. import db
-from flask_login import login_required
-from .forms import UpdateProfile 
+from flask_login import login_required,current_user
+from .forms import UpdateProfile, PitchForm
 
 @main.route('/index')
 def index():
@@ -16,7 +16,7 @@ def profile(uname):
     if user is None:
         abort(404)
     return render_template('profile/profile.html',user=user)
-    
+
 @main.route('/user/<uname>/update',methods = ['GET','POST'])
 @login_required
 def update_profile(uname):
@@ -35,3 +35,27 @@ def update_profile(uname):
         return redirect(url_for('.profile',uname=user.username))
 
     return render_template('profile/update.html',form =form)
+
+@main.route('/newpitch')
+@login_required()
+def new_pitch():
+    form = PitchForm()
+    
+    if form.validate_on_submit():
+        pitch_title = form.pitch_title.data
+        category = form.category.data
+        pitch_idea = form.pitch_idea.data
+        new_pitch = Pitch(pitch_title=pitch_title,category=category,pitch_idea=pitch_idea,user=current_user)
+
+        new_pitch.save_review()
+        db.session.add(new_pitch)
+        db.session.commit()
+
+        return redirect(url_for('main.new_pitch' ))
+    else:
+        all_pitches = Pitch.query.order_by(Pitch.date_posted).all()
+
+  
+    return render_template('newpitch.html',pitches=all_pitches)
+
+
