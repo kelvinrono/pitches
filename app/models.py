@@ -2,7 +2,7 @@ from . import db
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin
 from . import login_manager
-
+from datetime import datetime
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -35,3 +35,10 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return f'User {self.username}'
+
+class Comment(db.Model):
+    id=db.Column(db.Integer, primary_key=True)
+    pitch_title=db.Column(db.String)
+    pitch_idea=db.Column(db.String(1000))
+    posted=db.Column(db.DateTime, default=datetime.utcnow)
+    user_id=db.Column(db.Integer, db.ForeignKey("user.id"))
