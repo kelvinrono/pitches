@@ -5,7 +5,7 @@ from .. import db
 from flask_login import login_required,current_user
 from .forms import UpdateProfile, PitchForm
 
-@main.route('/index')
+@main.route('/')
 def index():
     return render_template('index.html')
 
@@ -36,8 +36,8 @@ def update_profile(uname):
 
     return render_template('profile/update.html',form =form)
 
-@main.route('/newpitch')
-@login_required()
+@main.route('/newpitch', methods = ['POST', 'GET'])
+@login_required
 def new_pitch():
     form = PitchForm()
     
@@ -47,15 +47,15 @@ def new_pitch():
         pitch_idea = form.pitch_idea.data
         new_pitch = Pitch(pitch_title=pitch_title,category=category,pitch_idea=pitch_idea,user=current_user)
 
-        new_pitch.save_review()
+        new_pitch.save_pitch()
         db.session.add(new_pitch)
         db.session.commit()
 
         return redirect(url_for('main.new_pitch' ))
     else:
-        all_pitches = Pitch.query.order_by(Pitch.date_posted).all()
+        all_pitches = Pitch.query.order_by(Pitch.posted).all()
 
   
-    return render_template('newpitch.html',pitches=all_pitches)
+    return render_template('newpitch.html',pitches=all_pitches, pitch_form=form)
 
 

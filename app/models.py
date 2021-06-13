@@ -7,7 +7,7 @@ from datetime import datetime
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
+    
 
 class User(db.Model, UserMixin):
     __tablename__ ='users'
@@ -46,13 +46,13 @@ class Pitch(db.Model):
     pitch_idea=db.Column(db.String(1000))
     category=db.Column(db.String(255))
     posted=db.Column(db.DateTime, default=datetime.utcnow)
-    user_id=db.Column(db.Integer, db.ForeignKey("user.id"))
+    user_id=db.Column(db.Integer, db.ForeignKey("users.id"))
 
-class Pitch:
-    def __init__(self, pitch_title, pitch_idea, category ):
-        self.pitch_title = pitch_title
-        self.pitch_idea = pitch_idea
-        self.category = category
+# class Pitch:
+#     def __init__(self, pitch_title, pitch_idea, category ):
+#         self.pitch_title = pitch_title
+#         self.pitch_idea = pitch_idea
+#         self.category = category
 
 
     def save_pitch(self):
