@@ -1,9 +1,9 @@
 from flask import render_template,request, redirect, url_for,abort
 from . import main
-from ..models import Pitch, User
+from ..models import Pitch, User, Comment
 from .. import db
 from flask_login import login_required,current_user
-from .forms import UpdateProfile, PitchForm
+from .forms import UpdateProfile, PitchForm, CommentsForm
 
 @main.route('/')
 def index():
@@ -51,11 +51,44 @@ def new_pitch():
         db.session.add(new_pitch)
         db.session.commit()
 
-        return redirect(url_for('main.new_pitch' ))
+        return redirect(url_for('main.single_pitch' ))
     else:
         all_pitches = Pitch.query.order_by(Pitch.posted).all()
 
   
     return render_template('newpitch.html',pitches=all_pitches, pitch_form=form)
 
+@main.route('/pitches', methods=['POST','GET']) 
+@login_required
+def single_pitch():
+    """get single  pitch"""
+   
+    commentform= CommentsForm()
+    if commentform.validate_on_submit():
+            new_comment= commentform.comment.data
+            user_id = current_user._get_current_object().id
+            pitch_id = current_user._get_current_object().id
+            # pitch_id=Pitches.query.get(Pitches.id)
+            new_comment= Comment(comment=new_comment,user_id=user_id,pitch_id=pitch_id)
+            new_comment.save_comment()
+            db.session.add(new_comment)
+            db.session.commit()
+            return redirect(url_for('main.single_pitch'))
+    else:
 
+            all_pitches = Pitch.query.order_by(Pitch.posted).all()
+            comments=Comment.query.order_by(Comment.comment).all()
+        
+    
+    return render_template('pitches.html', pitches=all_pitches, comments=comments, commentform=commentform)
+
+# @main.route('/user/<uname>/update/pic',methods= ['POST'])
+# @login_required
+# def update_pic(uname):
+#     user = User.query.filter_by(username = uname).first()
+#     if 'photo' in request.files:
+#         filename = photos.save(request.files['photo'])
+#         path = f'photos/{filename}'
+#         user.profile_pic_path = path
+#         db.session.commit()
+#     return redirect(url_for('main.profile',uname=uname))

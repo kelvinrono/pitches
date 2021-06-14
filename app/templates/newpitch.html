@@ -13,18 +13,7 @@
             <div>
                 {{wtf.quick_form(pitch_form)}}
             </div>
-            <div class="card">
-              <ul type="none">
-              {% for pitch in pitches%}
-              <h3><li class="card-title">{{pitch.pitch_title}}</li></h3>
-              <li>{{pitch.category}}</li>
-              <li>{{pitch.pitch_idea}}</li>
-              <li>{{pitch.posted}}}</li>
-              <li><button class="btn btn-success">Like</button> <span><button class="btn btn-danger">dislike</button></span> </li>
-              <hr>
-              {% endfor %}
-              </ul>
-            </div>
+   
     
         </div>
       </div>
