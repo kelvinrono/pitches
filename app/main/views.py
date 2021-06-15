@@ -67,9 +67,9 @@ def single_pitch():
     if commentform.validate_on_submit():
             new_comment= commentform.comment.data
             user_id = current_user._get_current_object().id
-            pitch_id = current_user._get_current_object().id
-            # pitch_id=Pitches.query.get(Pitches.id)
-            new_comment= Comment(comment=new_comment,user_id=user_id,pitch_id=pitch_id)
+            # pitch_id = current_user._get_current_object().id
+            #pitch_id=Pitches.query.get(Pitches.id)
+            new_comment= Comment(comment=new_comment,user_id=user_id)
             new_comment.save_comment()
             db.session.add(new_comment)
             db.session.commit()

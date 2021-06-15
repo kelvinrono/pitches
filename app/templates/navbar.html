@@ -18,8 +18,8 @@
           <li><a href="{{url_for('main.profile',uname=current_user.username)}}">Profile</a></li>
           <li><a href="{{url_for('auth.logout')}}">Sign out</a></li>
           {% else %}
-          <li><a href="{{url_for('auth.login')}}">Sign in</a></li>
-          <li><a href="{{url_for('auth.register')}}">Sign  up</a></li>
+          <li><a href="{{url_for('auth.login')}}"><button class="btn btn-success">Sign in</button></a></li>
+          <li><a href="{{url_for('auth.register')}}"> <button class="btn btn-success">Sign  up</button> </a></li>
           {%endif%}
         </ul>
         

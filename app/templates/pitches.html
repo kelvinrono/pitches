@@ -23,10 +23,10 @@
                     <li>
                         <h3>{{pitch.title}}</h3>
                     </li>
-                    <h6>{{pitch.category}}</h6>
-                    <p>{{pitch.description}}</p>
-                    <p>posted at: <em>{{pitch.posted}}</em></p>
-                    <button class="btn btn-success">Like</button><button class="btn btn-danger">Dislike</button>
+                    <h6><b>Category: </b>{{pitch.category}}</h6>
+                    <p><b>idea: </b>{{pitch.pitch_idea}}</p>
+                    <p> <b>posted at:</b> <em>{{pitch.posted}}</em></p>
+                    <b>Comments: </b>
                  <ul>
                     {%for comment in comments %}
                     <li>
